@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Tokens de color — HSL para permitir modulación con Tailwind (/opacity etc.).
+ * El tema oscuro es el default (audiencia gamer); light mode también disponible.
+ */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --surface: 0 0% 100%;
+    --surface-muted: 240 4.8% 95.9%;
+    --surface-border: 240 5.9% 90%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --surface: 240 6% 10%;
+    --surface-muted: 240 3.7% 15.9%;
+    --surface-border: 240 3.7% 20%;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  /* Scrollbar sutil */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--surface-border)); border-radius: 6px; }
+}
+
+/* Prose tuning para contenido de posts (Tiptap output) */
+@layer components {
+  .prose-silencers {
+    @apply max-w-none leading-relaxed;
+  }
+  .prose-silencers h1 { @apply text-3xl font-bold mt-8 mb-4; }
+  .prose-silencers h2 { @apply text-2xl font-bold mt-6 mb-3; }
+  .prose-silencers h3 { @apply text-xl font-semibold mt-5 mb-2; }
+  .prose-silencers p  { @apply my-3; }
+  .prose-silencers a  { @apply text-brand-400 underline underline-offset-2 hover:text-brand-300; }
+  .prose-silencers ul { @apply list-disc pl-6 my-3; }
+  .prose-silencers ol { @apply list-decimal pl-6 my-3; }
+  .prose-silencers blockquote {
+    @apply border-l-4 border-brand-500 pl-4 italic my-4 text-muted-foreground;
+  }
+  .prose-silencers code {
+    @apply bg-surface-muted px-1.5 py-0.5 rounded text-sm;
+  }
+  .prose-silencers pre {
+    @apply bg-surface-muted p-4 rounded-lg overflow-x-auto my-4;
+  }
+  .prose-silencers img { @apply rounded-lg my-4; }
+}
