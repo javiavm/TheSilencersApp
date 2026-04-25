@@ -16,13 +16,13 @@ npm run dev                   # http://localhost:3000
 
 ## Variables de entorno
 
-| Variable
+| Variable | De dónde |
 |---|---|
-| `DATABASE_URL` | Pertenece a supabase en la dashboard
-| `NEXTAUTH_SECRET` | `openssl rand -base64 32` | ejecutar en gitbash
+| `DATABASE_URL` | Supabase → dashboard del proyecto |
+| `NEXTAUTH_SECRET` | Generar con `openssl rand -base64 32` en Git Bash |
 | `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` | Discord Developer Portal. Redirect URI: `http://localhost:3000/api/auth/callback/discord` |
-| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | en settings abrir API alli se encontraran las keys |
-| `SUPABASE_STORAGE_BUCKET` | Crea un bucket público en Supabase e ingresar el Storage |
+| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API |
+| `SUPABASE_STORAGE_BUCKET` | Crear un bucket público en Supabase → Storage |
 
 > Para ser ADMIN: tras tu primer login, `npm run prisma:studio` despues ingresar al puerto y buscar la tabla `User` cambia `role` a `ADMIN`. Cierra sesión y vuelve a entrar.
 
