@@ -19,7 +19,9 @@
 ## Funcionalidades
 
 **Público**: `/`, `/posts`, `/posts/[slug]`, `/recursos`, `/recursos/[slug]` (descarga con contador).
+
 **Autenticado**: subir/editar recursos en `/recursos/nuevo` y `/recursos/[slug]/editar`.
+
 **Admin**: `/admin` (métricas), `/admin/posts` (CRUD + Tiptap), `/admin/recursos` (moderar).
 
 **API**: `/api/posts`, `/api/resources`, `/api/resources/[id]/download`, `/api/upload` (img 5 MB), `/api/upload/file` (binarios 50 MB).
