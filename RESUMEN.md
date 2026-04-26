@@ -4,14 +4,15 @@
 
 **La Fase 1** (cimientos + auth) y **Fase 2** (contenido + recursos) COMPLETADAS.
 
-| Día | Entregable
-| 1   | Setup Next.js 14 + TS + Tailwind + Prisma | Completado
-| 2   | Login Discord (NextAuth) + middleware + modelo User | Completado
-| 3   | Layout, navbar, footer, UI base, dark/light | Completado
-| 4   | Schema Prisma completo + seed + API base + Zod | Completado
-| 5–6 | **Módulo Contenido** end-to-end | En pruebas o testing
-| 7–8 | **Módulo Recursos** end-to-end | En pruebas
-| 9–15| Perfiles, servidores, búsqueda, hardening, deploy | PENDIENTE
+| Día  | Entregable | Estado |
+|------|---|---|
+| 1    | Setup Next.js 14 + TS + Tailwind + Prisma | Completado |
+| 2    | Login Discord (NextAuth) + middleware + modelo User | Completado |
+| 3    | Layout, navbar, footer, UI base, dark/light | Completado |
+| 4    | Schema Prisma completo + seed + API base + Zod | Completado |
+| 5–6  | **Módulo Contenido** end-to-end | En pruebas |
+| 7–8  | **Módulo Recursos** end-to-end | En pruebas |
+| 9–15 | Perfiles, servidores, búsqueda, hardening, deploy | PENDIENTE |
 
 ---
 
