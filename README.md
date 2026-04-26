@@ -18,7 +18,7 @@ npm run dev                   # http://localhost:3000
 
 | Variable | De dónde |
 |---|---|
-| `DATABASE_URL` | Supabase → dashboard del proyecto |
+| `DATABASE_URL` | Pertenece a supabase en la dashboard  |
 | `NEXTAUTH_SECRET` | Generar con `openssl rand -base64 32` en Git Bash |
 | `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` | Discord Developer Portal. Redirect URI: `http://localhost:3000/api/auth/callback/discord` |
 | `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API |
