@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { enforceRateLimit } from '@/lib/rateLimit';
 import { storage } from '@/lib/storage';
 import { Role } from '@prisma/client';
 
@@ -13,6 +14,14 @@ export async function POST(req: NextRequest) {
   if (session.user.role !== Role.ADMIN && session.user.role !== Role.MODERATOR) {
     return NextResponse.json({ error: 'Permiso insuficiente' }, { status: 403 });
   }
+
+  const blocked = enforceRateLimit(req, {
+    userId: session.user.id,
+    scope: 'upload:image',
+    limit: 20,
+    windowMs: 60_000,
+  });
+  if (blocked) return blocked;
 
   try {
     const formData = await req.formData();

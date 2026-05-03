@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { handleApiError } from '@/lib/api';
+import { enforceRateLimit } from '@/lib/rateLimit';
 import { postCreateSchema, postListQuerySchema } from '@/lib/validations/post';
 import { createPostAsUser, getAdminPosts, getPublicPosts } from '@/services/postService';
 
@@ -31,6 +32,14 @@ export async function POST(req: NextRequest) {
     if (!session?.user) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
+    const blocked = enforceRateLimit(req, {
+      userId: session.user.id,
+      scope: 'post:create',
+      limit: 10,
+      windowMs: 60_000,
+    });
+    if (blocked) return blocked;
+
     const body = postCreateSchema.parse(await req.json());
     const post = await createPostAsUser(body, session.user);
     return NextResponse.json(post, { status: 201 });

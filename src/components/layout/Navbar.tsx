@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
-import { LogIn, LogOut, Moon, Sun, Shield } from 'lucide-react';
+import { LogIn, LogOut, Moon, Sun, Shield, Search } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { SearchBar } from './SearchBar';
 
 export function Navbar() {
   const { data: session, status } = useSession();
@@ -27,6 +28,12 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
+          <SearchBar />
+          <Link href="/buscar" className="md:hidden" aria-label="Buscar">
+            <Button variant="ghost" size="icon">
+              <Search className="h-4 w-4" />
+            </Button>
+          </Link>
           {isAdmin && (
             <Link href="/admin">
               <Button variant="ghost" size="sm">
@@ -49,13 +56,17 @@ export function Navbar() {
 
           {status === 'loading' ? null : session?.user ? (
             <div className="flex items-center gap-2">
-              {session.user.image && (
-                <img
-                  src={session.user.image}
-                  alt={session.user.name ?? ''}
-                  className="h-8 w-8 rounded-full border border-surface-border"
-                />
-              )}
+              <Link href="/me" className="inline-flex items-center" aria-label="Mi perfil">
+                {session.user.image ? (
+                  <img
+                    src={session.user.image}
+                    alt={session.user.name ?? ''}
+                    className="h-8 w-8 rounded-full border border-surface-border hover:border-brand-500 transition-colors"
+                  />
+                ) : (
+                  <div className="h-8 w-8 rounded-full bg-surface-muted border border-surface-border" />
+                )}
+              </Link>
               <Button variant="ghost" size="sm" onClick={() => signOut()}>
                 <LogOut className="h-4 w-4" />
                 <span className="hidden sm:inline">Salir</span>

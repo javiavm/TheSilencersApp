@@ -1,5 +1,6 @@
 // Abstracción de storage. Hoy usa Supabase; en Fase 2 se swap a Cloudflare R2.
 import { createClient } from '@supabase/supabase-js';
+import { env } from '@/lib/env';
 
 export interface StorageProvider {
   upload(path: string, data: ArrayBuffer | Buffer, contentType: string): Promise<string>;
@@ -7,15 +8,13 @@ export interface StorageProvider {
   getPublicUrl(path: string): string;
 }
 
-const bucket = process.env.SUPABASE_STORAGE_BUCKET ?? 'the-silencers';
+const bucket = env.SUPABASE_STORAGE_BUCKET;
 
 function getServerClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceKey) {
+  if (!env.NEXT_PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error('Falta NEXT_PUBLIC_SUPABASE_URL y/o SUPABASE_SERVICE_ROLE_KEY.');
   }
-  return createClient(url, serviceKey, {
+  return createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }
@@ -39,7 +38,6 @@ export const storage: StorageProvider = {
   },
 
   getPublicUrl(path) {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-    return `${url}/storage/v1/object/public/${bucket}/${path}`;
+    return `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
   },
 };

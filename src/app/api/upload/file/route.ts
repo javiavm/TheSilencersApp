@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { enforceRateLimit } from '@/lib/rateLimit';
 import { storage } from '@/lib/storage';
 
 const MAX_SIZE_BYTES = 50 * 1024 * 1024;
@@ -24,6 +25,14 @@ const ALLOWED_MIME = new Set<string>([
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+
+  const blocked = enforceRateLimit(req, {
+    userId: session.user.id,
+    scope: 'upload:file',
+    limit: 10,
+    windowMs: 60_000,
+  });
+  if (blocked) return blocked;
 
   try {
     const formData = await req.formData();

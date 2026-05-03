@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+  # Prisma binaries para Netlify Lambda (linux-rhel-openssl)
+  PRISMA_CLI_BINARY_TARGETS = "rhel-openssl-3.0.x"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Headers globales (refuerzan los del next.config; Netlify les da prioridad)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

@@ -3,6 +3,7 @@ import type { NextAuthOptions } from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import DiscordProvider from 'next-auth/providers/discord';
 import { prisma } from '@/lib/prisma';
+import { env } from '@/lib/env';
 import { Role } from '@prisma/client';
 
 export const authOptions: NextAuthOptions = {
@@ -11,8 +12,8 @@ export const authOptions: NextAuthOptions = {
   pages: { signIn: '/login' },
   providers: [
     DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID ?? '',
-      clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
+      clientId: env.DISCORD_CLIENT_ID,
+      clientSecret: env.DISCORD_CLIENT_SECRET,
       authorization: { params: { scope: 'identify email' } },
     }),
   ],

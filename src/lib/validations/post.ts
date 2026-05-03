@@ -3,10 +3,54 @@ import { PostType } from '@prisma/client';
 
 const postTypeEnum = z.nativeEnum(PostType);
 
-const tiptapDoc = z.object({
-  type: z.literal('doc'),
-  content: z.array(z.any()).optional(),
-});
+// Whitelist de nodos Tiptap permitidos. Defensa en profundidad: el render
+// vuelve a sanitizar con DOMPurify, pero validamos input también.
+const ALLOWED_NODE_TYPES = new Set([
+  'doc',
+  'paragraph',
+  'text',
+  'heading',
+  'bulletList',
+  'orderedList',
+  'listItem',
+  'blockquote',
+  'codeBlock',
+  'horizontalRule',
+  'hardBreak',
+]);
+const ALLOWED_MARKS = new Set(['bold', 'italic', 'strike', 'code', 'link']);
+
+type TiptapNode = {
+  type: string;
+  content?: TiptapNode[];
+  marks?: Array<{ type: string }>;
+  text?: string;
+  attrs?: Record<string, unknown>;
+};
+
+const tiptapNode: z.ZodType<TiptapNode> = z.lazy(() =>
+  z
+    .object({
+      type: z.string(),
+      content: z.array(tiptapNode).optional(),
+      marks: z.array(z.object({ type: z.string() }).passthrough()).optional(),
+      text: z.string().optional(),
+      attrs: z.record(z.unknown()).optional(),
+    })
+    .passthrough()
+    .refine((n) => ALLOWED_NODE_TYPES.has(n.type), { message: 'Nodo Tiptap no permitido.' })
+    .refine(
+      (n) => !n.marks || n.marks.every((m) => ALLOWED_MARKS.has(m.type)),
+      { message: 'Marca Tiptap no permitida.' },
+    ),
+);
+
+const tiptapDoc = z
+  .object({
+    type: z.literal('doc'),
+    content: z.array(tiptapNode).optional(),
+  })
+  .passthrough();
 
 export const postCreateSchema = z.object({
   title: z.string().min(3, 'El título debe tener al menos 3 caracteres.').max(200),

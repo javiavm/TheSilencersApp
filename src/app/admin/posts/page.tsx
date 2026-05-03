@@ -33,8 +33,8 @@ export default async function AdminPostsPage({ searchParams }: Props) {
         </Link>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-xl border border-surface-border">
-        <table className="w-full text-sm">
+      <div className="mt-6 overflow-x-auto rounded-xl border border-surface-border">
+        <table className="w-full min-w-[640px] text-sm">
           <thead className="bg-surface-muted text-left text-xs uppercase text-muted-foreground">
             <tr>
               <th className="px-4 py-2">Título</th>

@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { handleApiError } from '@/lib/api';
+import { enforceRateLimit } from '@/lib/rateLimit';
 import { resourceCreateSchema, resourceListQuerySchema } from '@/lib/validations/resource';
 import {
   createResourceAsUser,
@@ -29,6 +30,14 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    const blocked = enforceRateLimit(req, {
+      userId: session.user.id,
+      scope: 'resource:create',
+      limit: 10,
+      windowMs: 60_000,
+    });
+    if (blocked) return blocked;
+
     const body = resourceCreateSchema.parse(await req.json());
     const created = await createResourceAsUser(body, session.user);
     return NextResponse.json(created, { status: 201 });

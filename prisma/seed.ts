@@ -122,6 +122,26 @@ async function main() {
     });
   }
 
+  const existingDemoServer = await prisma.server.findFirst({
+    where: { name: 'Silencers Survival', ownerId: admin.id },
+    select: { id: true },
+  });
+  if (!existingDemoServer) {
+    await prisma.server.create({
+      data: {
+        name: 'Silencers Survival',
+        description:
+          'Servidor de Minecraft survival para la comunidad. Vanilla con plugins ligeros, sin pay-to-win.',
+        game: Game.MINECRAFT,
+        ip: 'play.silencers.gg',
+        discordInvite: 'https://discord.gg/example',
+        tags: ['survival', '1.20', 'vanilla'],
+        isVerified: true,
+        ownerId: admin.id,
+      },
+    });
+  }
+
   console.log('✓ Seed completo.');
 }
 
