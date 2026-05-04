@@ -92,7 +92,13 @@ export async function updatePostAsUser(
     throw new ForbiddenError();
   }
 
-  const data: Prisma.PostUncheckedUpdateInput = { ...input };
+  // Extraemos content del spread porque su tipo Zod estricto no encaja
+  // directamente con Prisma.InputJsonValue
+  const { content, ...rest } = input;
+  const data: Prisma.PostUncheckedUpdateInput = { ...rest };
+  if (content !== undefined) {
+    data.content = content as Prisma.InputJsonValue;
+  }
 
   if (input.title && input.title !== existing.title) {
     data.slug = await uniqueSlug(input.title, id);
