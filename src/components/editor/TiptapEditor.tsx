@@ -26,7 +26,7 @@ interface Props {
 export function TiptapEditor({ value, onChange, placeholder = 'Escribe aquí…' }: Props) {
   const editor = useEditor({
     extensions: [StarterKit],
-    content: (value as Parameters<typeof useEditor>[0]['content']) ?? '',
+    content: (value as NonNullable<Parameters<typeof useEditor>[0]>['content']) ?? '',
     immediatelyRender: false,
     editorProps: {
       attributes: {
