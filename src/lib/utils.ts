@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import slugify from 'slugify';
+import type { PostType, ResourceCategory, Game } from '@prisma/client';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,14 +37,15 @@ export function formatBytes(bytes?: number | null): string {
   return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
 }
 
-export const POST_TYPE_LABELS: Record<string, string> = {
+
+export const POST_TYPE_LABELS: Record<PostType, string> = {
   NEWS: 'Noticia',
   ANNOUNCEMENT: 'Anuncio',
   GIVEAWAY: 'Sorteo',
   RESULT: 'Resultado',
 };
 
-export const RESOURCE_CATEGORY_LABELS: Record<string, string> = {
+export const RESOURCE_CATEGORY_LABELS: Record<ResourceCategory, string> = {
   GUIDE: 'Guía',
   MOD: 'Mod',
   PLUGIN: 'Plugin',
@@ -51,7 +53,7 @@ export const RESOURCE_CATEGORY_LABELS: Record<string, string> = {
   OTHER: 'Otro',
 };
 
-export const GAME_LABELS: Record<string, string> = {
+export const GAME_LABELS: Record<Game, string> = {
   MINECRAFT: 'Minecraft',
   DISCORD_BOT: 'Bot de Discord',
   GENERAL: 'General',
