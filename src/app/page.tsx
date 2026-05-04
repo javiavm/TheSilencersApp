@@ -5,7 +5,8 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { getPublicPosts } from '@/services/postService';
 import { PostCard } from '@/components/posts/PostCard';
 
-export const revalidate = 60; // ISR: home se regenera cada minuto
+// Server-rendered en cada request — evita problemas de DB durante el build.
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const { items: latestPosts } = await getPublicPosts({
