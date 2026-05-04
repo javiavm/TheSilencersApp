@@ -70,7 +70,7 @@ export async function createPostAsUser(input: PostCreateInput, user: ActingUser)
     title: input.title,
     slug,
     excerpt: input.excerpt ?? null,
-    content: input.content,
+    content: input.content as Prisma.InputJsonValue,
     type: input.type,
     tags: input.tags,
     featuredImageUrl: input.featuredImageUrl ?? null,
