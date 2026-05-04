@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { getPublicPosts } from '@/services/postService';
 import { postListQuerySchema } from '@/lib/validations/post';
 import { PostCard } from '@/components/posts/PostCard';
@@ -27,7 +28,9 @@ export default async function PostsPage({ searchParams }: Props) {
             {total} {total === 1 ? 'publicación' : 'publicaciones'}
           </p>
         </div>
-        <PostFilters />
+        <Suspense fallback={null}>
+          <PostFilters />
+        </Suspense>
       </header>
 
       {items.length === 0 ? (

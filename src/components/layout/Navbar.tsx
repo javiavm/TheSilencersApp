@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { LogIn, LogOut, Moon, Sun, Shield, Search } from 'lucide-react';
@@ -28,7 +29,9 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          <SearchBar />
+          <Suspense fallback={null}>
+            <SearchBar />
+          </Suspense>
           <Link href="/buscar" className="md:hidden" aria-label="Buscar">
             <Button variant="ghost" size="icon">
               <Search className="h-4 w-4" />

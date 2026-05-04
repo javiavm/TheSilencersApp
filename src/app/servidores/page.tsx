@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { Plus } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -34,7 +35,9 @@ export default async function ServersPage({ searchParams }: Props) {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <ServerFilters />
+          <Suspense fallback={null}>
+            <ServerFilters />
+          </Suspense>
           {session?.user && (
             <Link href="/servidores/nuevo">
               <Button>
