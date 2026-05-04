@@ -51,7 +51,7 @@ export default async function ProfilePage({ params }: Props) {
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center">
         {user.avatarUrl ? (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={user.avatarUrl} alt={user.username} className="h-20 w-20 rounded-full border border-surface-border" />
+          <img src={user.avatarUrl} alt={user.username ?? ''} className="h-20 w-20 rounded-full border border-surface-border" />
         ) : (
           <div className="h-20 w-20 rounded-full bg-surface-muted border border-surface-border" />
         )}

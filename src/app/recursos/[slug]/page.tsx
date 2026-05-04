@@ -103,7 +103,7 @@ export default async function ResourceDetailPage({ params }: Props) {
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
                   src={resource.author.avatarUrl}
-                  alt={resource.author.username}
+                  alt={resource.author.username ?? ''}
                   className="h-10 w-10 rounded-full border border-surface-border"
                 />
               )}
