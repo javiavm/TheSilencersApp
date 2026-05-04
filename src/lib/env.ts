@@ -6,10 +6,20 @@ const isProd = process.env.NODE_ENV === 'production';
 const requiredInProd = (msg: string) =>
   z.string().min(1, msg).refine((v) => !isProd || v.length > 0, msg);
 
+// Postgres connection strings con caracteres especiales en el password no
+// pasan z.string().url() — validamos con startsWith en lugar de URL parser.
+const postgresUrl = z
+  .string()
+  .min(20, 'DATABASE_URL es muy corta o está vacía.')
+  .refine(
+    (v) => v.startsWith('postgresql://') || v.startsWith('postgres://'),
+    'DATABASE_URL debe empezar con postgresql:// o postgres://',
+  );
+
 const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 
-  DATABASE_URL: z.string().url('DATABASE_URL debe ser una URL postgresql válida.'),
+  DATABASE_URL: postgresUrl,
 
   NEXTAUTH_URL: z.string().url().default('http://localhost:3000'),
   NEXTAUTH_SECRET: requiredInProd('NEXTAUTH_SECRET es obligatorio en producción.'),
