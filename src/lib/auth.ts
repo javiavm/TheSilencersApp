@@ -21,7 +21,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;
-        // @ts-expect-error role viene del adapter
         token.role = user.role ?? Role.USER;
       }
       if (trigger === 'update' || (token.id && !token.role)) {
