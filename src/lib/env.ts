@@ -6,14 +6,26 @@ const isProd = process.env.NODE_ENV === 'production';
 const requiredInProd = (msg: string) =>
   z.string().min(1, msg).refine((v) => !isProd || v.length > 0, msg);
 
-// Postgres connection strings con caracteres especiales en el password no
-// pasan z.string().url() — validamos con startsWith en lugar de URL parser.
+// Postgres connection string. Limpiamos errores comunes de copy/paste:
+// espacios, comillas envolventes, prefijo "DATABASE_URL=", saltos de línea.
 const postgresUrl = z
   .string()
-  .min(20, 'DATABASE_URL es muy corta o está vacía.')
-  .refine(
-    (v) => v.startsWith('postgresql://') || v.startsWith('postgres://'),
-    'DATABASE_URL debe empezar con postgresql:// o postgres://',
+  .transform((v) =>
+    v
+      .trim()
+      .replace(/^DATABASE_URL\s*=\s*/i, '')
+      .replace(/^["']/, '')
+      .replace(/["']$/, '')
+      .trim(),
+  )
+  .pipe(
+    z
+      .string()
+      .min(20, 'DATABASE_URL es muy corta o está vacía.')
+      .refine(
+        (v) => v.startsWith('postgresql://') || v.startsWith('postgres://'),
+        'DATABASE_URL debe empezar con postgresql:// o postgres://',
+      ),
   );
 
 const schema = z.object({
